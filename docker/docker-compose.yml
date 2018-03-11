@@ -1,0 +1,12 @@
+web:
+  image: local/phippy
+  ports:
+   - "31380:80"
+  links:
+   - etcd
+
+etcd:
+  image: elcolio/etcd:latest
+  ports:
+   - "4001:4001"
+  container_name: etcd
