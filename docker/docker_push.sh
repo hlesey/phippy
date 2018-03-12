@@ -8,4 +8,4 @@ fi
 DOCKER_HUB_USER=$1
 
 docker tag local/phippy DOCKER_HUB_USER/phippy
-docker push trainersontheweb/phippy
+docker push DOCKER_HUB_USER/phippy
