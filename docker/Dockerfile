@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 EXPOSE 80
-CMD [ "python", "lab_app.py" ]
+CMD [ "python", "phippy.py" ]
