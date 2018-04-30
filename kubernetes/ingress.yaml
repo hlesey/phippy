@@ -2,9 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: phippy
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
   - host: phippy.local
@@ -12,5 +9,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: phippy-clusterip
+          serviceName: phippy
           servicePort: 80

@@ -6,6 +6,7 @@ if [ $# -lt 1 ]; then
 fi
 
 DOCKER_HUB_USER=$1
+VER=1.0
 
-docker tag local/phippy ${DOCKER_HUB_USER}/phippy
-docker push ${DOCKER_HUB_USER}/phippy
+docker tag local/phippy:${VER} ${DOCKER_HUB_USER}/phippy:${VER}
+docker push ${DOCKER_HUB_USER}/phippy:${VER}

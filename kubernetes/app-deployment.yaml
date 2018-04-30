@@ -5,10 +5,15 @@ metadata:
   labels:
     app: phippy
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: phippy
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 2
   template:
     metadata:
       labels:
@@ -16,7 +21,11 @@ spec:
     spec:
       containers:
       - name: phippy
-        image: trainersontheweb/phippy:latest
+        image: trainersontheweb/phippy:1.0
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
         ports:
         - containerPort: 80
           protocol: TCP
