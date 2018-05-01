@@ -23,7 +23,7 @@ def hello():
 
 @app.route('/version')
 def version():
-    return "phyppi version = " + ver
+    return "version = " + ver
 
 @app.route('/healthz')
 def healthz():
