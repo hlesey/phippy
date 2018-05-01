@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: etcd
-        image: elcolio/etcd:latest
+        image: trainersontheweb/etcd:3.3.4
         ports:
         - containerPort: 4001
           protocol: TCP
