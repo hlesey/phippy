@@ -5,6 +5,9 @@ LABEL \
   layer="frontend" \
   git-url="https://github.com/victorvarza/phippy.git"
 
+ENV ETCD_HOST='etcd'
+ENV ETCD_PORT=2379
+
 WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
