@@ -6,7 +6,7 @@ import os
 import platform
 
 app = Flask(__name__)
-etcd_client = etcd.Client(host=os.environ.get('ETCD_HOST', 'etcd'), port=4001)
+etcd_client = etcd.Client(host=os.environ.get('ETCD_HOST', 'etcd'), port=int(os.environ.get('ETCD_PORT', 2379)))
 etcd_client.write('mykey', 0)
 ver = "1.0"
 
