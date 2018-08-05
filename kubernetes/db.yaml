@@ -20,3 +20,18 @@ spec:
         ports:
         - containerPort: 4001
           protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: etcd
+  labels:
+    name: phippydb
+    app: phippydb
+spec:
+  ports:
+  - port: 4001
+    name: etcd
+    targetPort: 4001
+  selector:
+    app: phippydb
