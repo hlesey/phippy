@@ -24,9 +24,9 @@ kind: Service
 metadata:
   name: etcd
 spec:
-  ports:
-  - port: 4001
-    name: etcd
-    targetPort: 4001
   selector:
     app: phippydb
+  ports:
+  - name: etcd
+    port: 4001
+    targetPort: 4001

@@ -20,6 +20,9 @@ spec:
       containers:
       - name: phippy
         image: qedzone/phippy:1.0
+        env:
+          - name: ETCD_PORT
+            value: "4001"
         resources:
           requests:
             cpu: "100m"
