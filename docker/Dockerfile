@@ -3,7 +3,7 @@ FROM python:3.6-alpine3.7
 LABEL \
   app="docker-cursantX" \
   layer="frontend" \
-  git-url="https://github.com/victorvarza/phippy.git"
+  git-url="https://github.com/qedzone/phippy.git"
 
 ENV ETCD_HOST='etcd'
 ENV ETCD_PORT=2379
