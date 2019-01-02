@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   name: phippy
 spec:
-  replicas: 2
+  replicas: 1
+#  minReadySeconds: 15
   selector:
     matchLabels:
       app: phippyapp # has to match .spec.template.metadata.labels
@@ -39,10 +40,8 @@ metadata:
 spec:
   selector:
     app: phippyapp
-  type: NodePort
   ports:
   - name: http
-    nodePort: 31380
     port: 80
     targetPort: 80
     protocol: TCP
@@ -60,3 +59,16 @@ spec:
         backend:
           serviceName: phippyapp
           servicePort: 80
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: phippyapp
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: phippy
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 50
