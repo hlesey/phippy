@@ -59,16 +59,4 @@ spec:
         backend:
           serviceName: phippyapp
           servicePort: 80
----
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: phippyapp
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: phippy
-  minReplicas: 2
-  maxReplicas: 4
-  targetCPUUtilizationPercentage: 50
+
