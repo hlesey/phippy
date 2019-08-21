@@ -33,9 +33,5 @@ def healthz():
 def node():
     return platform.node()
 
-@app.route('/ceva')
-def node():
-    return "ceva"
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80, debug=True)
