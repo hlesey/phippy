@@ -1,12 +1,25 @@
-web:
-  image: local/phippy
-  ports:
-   - "31380:80"
-  links:
-   - etcd
+version: "3.7"
 
-etcd:
-  image: qedzone/etcd:3.3.4
-  ports:
-   - "4001:4001"
-  container_name: etcd
+services:
+  web:
+    image: local/phippy:1.0
+    ports:
+      - "31380-31384:80"
+    networks:
+      - phippy
+    environment:
+      ETCD_HOST: etcd
+      ETCD_PORT: 2379
+    depends_on:
+      - etcd
+
+  etcd:
+    image: qedzone/etcd:3.3.4
+    ports:
+      - "2379:2379"
+    networks:
+      - phippy
+
+networks:
+  phippy:
+    name: phippy
