@@ -6,17 +6,29 @@ Simple tutorial to build and deploy a simple Python app in Kubernetes.
 
 You need to replace DOCKER_HUB_USER with your Docker Hub username.
 ```
-cd docker
 docker build -t <DOCKER_HUB_USER>/phippy .
 docker push <DOCKER_HUB_USER>/phippy
 ```
-Or you can use the existing scripts to build/push/run the app:
+
+## Launch the app using Docker
+```
+docker network create phippy
+docker run -d -p 2379:2379 --net phippy --name etcd quay.io/coreos/etcd:3.3.4
+docker run -d -p 31380:80 --net phippy --name phippy <DOCKER_HUB_USER>/phippy
+```
+
+Or you can use the existing scripts to build/push/run/cleanup the app:
 
 ```
-cd docker
-./build
-./push
-./run 
+./docker_build.sh
+./docker_push.sh
+./docker_run.sh
+./docker_cleanup.sh 
+```
+
+## Test the app
+```
+curl localhost:31380
 ```
 
 ## Launch the app with Docker Compose
@@ -24,9 +36,9 @@ cd docker
 docker-compose up -d 
 ```
 
-## Test the app
+## Scale up the app with Docker Compose
 ```
-curl localhost:31380
+docker-compose up -d --scale web=5
 ```
 
 ## Deploy the app to Kubernetes
