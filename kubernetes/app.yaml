@@ -17,13 +17,17 @@ spec:
     metadata:
       labels:
         app: phippyapp # has to match .spec.selector.matchLabels
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5000"
     spec:
       containers:
       - name: phippy
         image: hlesey/phippy:1.0
+        imagePullPolicy: Always
         env:
-          - name: Reload
-            value: true
+          - name: FLASK_ENV
+            value: development
           - name: REDIS_PORT
             value: "6379"
         resources:
