@@ -15,12 +15,8 @@ services:
       - redis
   redis:
     image: hlesey/redis:4
-    networks:
-      - phippy
-  nginx:
-    image: nginx
     ports:
-      - "80:80"
+      - "6379:6379"
     networks:
       - phippy
 networks:

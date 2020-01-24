@@ -1,14 +1,15 @@
-from flask import Flask, render_template
-from redis import Redis
 import os
 import platform
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST, REGISTRY
+from flask import Flask, Response, render_template
+from redis import Redis
 from app.__version__ import __version__
-
+from app.monitoring import register_metrics
 
 app = Flask(__name__)
 redis = Redis(host=os.environ.get('REDIS_HOST', 'redis'),  port=int(os.environ.get('REDIS_PORT', 6379)))
 redis.set('hits', 0)
-
+register_metrics(app, app_version=__version__)
 
 @app.route('/', methods=['POST'])
 def hits_post():
@@ -42,3 +43,13 @@ def healthz():
 @app.route('/node')
 def node():
     return platform.node()
+    
+
+@app.route('/metrics')
+def metrics():
+    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
+
+
+@app.errorhandler(500)
+def handle_500(error):
+    return str(error), 500
