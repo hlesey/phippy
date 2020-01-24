@@ -17,19 +17,25 @@ spec:
     metadata:
       labels:
         app: phippyapp # has to match .spec.selector.matchLabels
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5000"
     spec:
       containers:
       - name: phippy
-        image: qedzone/phippy:1.0
+        image: hlesey/phippy:1.0
+        imagePullPolicy: Always
         env:
-          - name: ETCD_PORT
-            value: "4001"
+          - name: FLASK_ENV
+            value: development
+          - name: REDIS_PORT
+            value: "6379"
         resources:
           requests:
             cpu: "100m"
             memory: "100Mi"
         ports:
-        - containerPort: 80
+        - containerPort: 5000
           protocol: TCP
           name: http
 ---
@@ -43,7 +49,7 @@ spec:
   ports:
   - name: http
     port: 80
-    targetPort: 80
+    targetPort: 5000
     protocol: TCP
 ---
 apiVersion: networking.k8s.io/v1beta1
