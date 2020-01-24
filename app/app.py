@@ -8,7 +8,6 @@ from app.monitoring import register_metrics
 
 app = Flask(__name__)
 redis = Redis(host=os.environ.get('REDIS_HOST', 'redis'),  port=int(os.environ.get('REDIS_PORT', 6379)))
-redis.set('hits', 0)
 register_metrics(app, app_version=__version__)
 
 @app.route('/', methods=['POST'])
@@ -23,6 +22,8 @@ def hits_post():
 
 @app.route('/', methods=['GET'])
 def hits_get():
+    if not redis.exists('hits'):
+        redis.set('hits', 0)
     hits = int(redis.get('hits'))
     return render_template("index.html", picture="/static/images/ok.jpg", message="You hit me %s times." % hits)
 
