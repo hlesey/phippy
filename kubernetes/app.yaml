@@ -24,7 +24,7 @@ spec:
       containers:
       - name: phippy
         image: hlesey/phippy:1.0
-        imagePullPolicy: Always
+        # imagePullPolicy: Always
         env:
           - name: FLASK_ENV
             value: development
