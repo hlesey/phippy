@@ -1,9 +1,2 @@
-# Created by .ignore support plugin (hsz.mobi)
-.project
-*/.project
-/*.iml
-.idea
-.vagrant
-*.rpm
-/vagrant/*.vdi
-*.DS_Store
+__pycache__
+venv
