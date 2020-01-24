@@ -13,20 +13,20 @@ spec:
         app: phippydb # has to match .spec.selector.matchLabels
     spec:
       containers:
-      - name: etcd
-        image: qedzone/etcd:3.3.4
+      - name: redis
+        image: hlesey/redis
         ports:
-        - containerPort: 4001
+        - containerPort: 6379
           protocol: TCP
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: etcd
+  name: redis
 spec:
   selector:
     app: phippydb
   ports:
-  - name: etcd
-    port: 4001
-    targetPort: 4001
+  - name: redis
+    port: 6379
+    targetPort: 6379
