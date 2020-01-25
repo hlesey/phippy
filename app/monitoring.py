@@ -69,3 +69,10 @@ def register_metrics(app, app_version=None, app_config=None):
     app.after_request(after_request)
     # APP_INFO.info({"version": app_version, "config": app_config})
 
+def record_error_metric(status=None):
+    ERROROS_COUNT.labels(
+        APP_NAME,
+        request.method,
+        request.endpoint,
+        status,
+    ).inc()
