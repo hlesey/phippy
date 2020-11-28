@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   web:
-    image: hlesey/phippy:1.0
+    image: ghcr.io/hlesey/phippy:1.0
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -14,7 +14,7 @@ services:
     depends_on:
       - redis
   redis:
-    image: hlesey/redis:4
+    image: ghcr.io/hlesey/redis:4
     ports:
       - "6379:6379"
     networks:
