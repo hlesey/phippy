@@ -1,13 +1,13 @@
 
-DOCKER_HUB_USER=hlesey
+REGISTRY=ghcr.io/hlesey
 REPO_NAME=phippy
 VERSION=$$(cat app/__version__.py | cut -d '=' -f2 | tr -d '"')
 
 build:
-	docker build -t ${DOCKER_HUB_USER}/${REPO_NAME}:${VERSION} .
+	docker build -t ${REGISTRY}/${REPO_NAME}:${VERSION} .
 
 push: 
-	docker push ${DOCKER_HUB_USER}/${REPO_NAME}:${VERSION}
+	docker push ${REGISTRY}/${REPO_NAME}:${VERSION}
 
 run:
 	docker-compose up

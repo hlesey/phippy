@@ -6,15 +6,15 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: phippydb # has to match .spec.template.metadata.labels
+      app: phippydb
   template:
     metadata:
       labels:
-        app: phippydb # has to match .spec.selector.matchLabels
+        app: phippydb
     spec:
       containers:
       - name: redis
-        image: hlesey/redis
+        image: ghcr.io/hlesey/redis:latest
         ports:
         - containerPort: 6379
           protocol: TCP

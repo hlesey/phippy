@@ -7,7 +7,7 @@ spec:
 #  minReadySeconds: 15
   selector:
     matchLabels:
-      app: phippyapp # has to match .spec.template.metadata.labels
+      app: phippyapp
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -16,15 +16,14 @@ spec:
   template:
     metadata:
       labels:
-        app: phippyapp # has to match .spec.selector.matchLabels
+        app: phippyapp
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "5000"
     spec:
       containers:
       - name: phippy
-        image: hlesey/phippy:1.0
-        # imagePullPolicy: Always
+        image: ghcr.io/hlesey/phippy:1.0
         env:
           - name: FLASK_ENV
             value: development
