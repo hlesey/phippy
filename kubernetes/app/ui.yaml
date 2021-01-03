@@ -1,0 +1,74 @@
+---
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: phippy-ui
+  namespace: phippy
+spec:
+  replicas: 2
+#  minReadySeconds: 15
+  selector:
+    matchLabels:
+      app: phippy-ui
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: phippy-ui
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5000"
+    spec:
+      containers:
+      - name: phippy
+        image: ghcr.io/hlesey/phippy-ui:1.0
+        env:
+          - name: FLASK_ENV
+            value: development
+          - name: API_PORT
+            value: "80"
+          - name: API_HOST
+            value: "phippy-api"
+        resources:
+          limits:
+            memory: "100Mi"
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: phippy-ui
+  namespace: phippy
+spec:
+  selector:
+    app: phippy-ui
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5000
+    protocol: TCP
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: phippy-ui
+  namespace: phippy
+spec:
+  rules:
+  - host: phippy.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: phippy-ui
+          servicePort: 80

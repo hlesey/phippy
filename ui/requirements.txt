@@ -1,0 +1,5 @@
+flask
+redis
+prometheus_client
+jsonify
+requests

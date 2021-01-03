@@ -1,24 +1,34 @@
 version: "3.7"
 
-services:
-  web:
-    image: ghcr.io/hlesey/phippy:1.0
+services: 
+  ui:
+    image: ghcr.io/hlesey/phippy-ui:1.0
     environment:
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
+      API_HOST: api
+      API_PORT: 5000
+      FLASK_ENV: development
+    ports:
+      - "8080:5000"
+    networks:
+      - phippy-net
+    depends_on:
+      - api
+  api:
+    image: ghcr.io/hlesey/phippy-api:1.0
+    environment:
+      DB_HOST: db
+      DB_PORT: 6379
       FLASK_ENV: development
     ports:
       - "5000:5000"
     networks:
-      - phippy
+      - phippy-net
     depends_on:
-      - redis
-  redis:
+      - db
+  db:
     image: ghcr.io/hlesey/redis:4
-    ports:
-      - "6379:6379"
     networks:
-      - phippy
+      - phippy-net
 networks:
-  phippy:
-    name: phippy
+  phippy-net:
+    name: phippy-net

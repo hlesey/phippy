@@ -1,69 +1,33 @@
 # Phippy
-Simple tutorial to build and deploy a simple Python app in Kubernetes.
 
+Simple tutorial to build and deploy a Python App in Kubernetes.
 
-## Build a Docker image from existing Python source code and push it to Docker Hub. 
+## Phippy Deployment Overview in K8s
 
-You need to replace DOCKER_HUB_USER with your Docker Hub username.
-```
-docker build -t <DOCKER_HUB_USER>/phippy .
-docker push <DOCKER_HUB_USER>/phippy
-```
+![](./docs/static/phippy-api.png)
 
-## Launch the app using Docker
+## Phippy Isolation with Network Policies
 
-You can use the existing commands to build/push/run the app:
+![](./docs/static/phippy-api-isolation.png)
 
-```
+## Build and Test with Docker-Compose
+
+```bash
 make build
 make push
-make run
+docker compose up
 ```
 
-## Test the app
-```
-make run
-curl localhost:5000
-```
+Access the [http://localhost:8080](http://localhost:8080).  
 
-## Scale up the app with Docker Compose
-```
-docker-compose up -d --scale web=5
-```
 
 ## Deploy the app to Kubernetes
-```
-kubectl apply -f kubernetes/
-```
 
-## Check that the Pods and Services are created
-```
+```bash
+kubectl apply -f kubernetes/
+
 kubectl get pods
 kubectl get svc
 ```
 
-## Get the NodePort for the web Service. Make a note of the port.
-```
-kubectl describe svc phippy
-```
-
-## Test the app by accessing the NodePort of one of the nodes.
-
-```
-kubectl get nodes
-curl <NODE_IP>:<NODEPORT>
-```
-
-## Optional - deploy app via ingress
-
-```
-kubectl apply -f kubernetes/ingress
-```
-
-## Test the app by accessing the ingress name and port
-
-```
-kubectl get ingress
-kubectl describe ingress phippy
-
-curl http://phippy.local
+Access the [http://phippy.local](http://phippy.local:30080).

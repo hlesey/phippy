@@ -1,0 +1,18 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: 10-allow-api-to-db
+  namespace: phippy
+spec:
+  podSelector:
+    matchLabels:
+      app: phippy-db
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: phippy-api
+      ports:
+        - protocol: TCP
+          port: 6379
