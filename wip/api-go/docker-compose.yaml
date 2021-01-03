@@ -1,0 +1,11 @@
+# web:
+#   image: hlesey/phippy:latest
+#   ports:
+#    - "8086:8080"
+#   links:
+#    - redis
+redis:
+  image: redis:latest
+  ports:
+   - "6379:6379"
+  container_name: redis

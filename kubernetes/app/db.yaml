@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: phippy-db
+  namespace: phippy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phippy-db
+  template:
+    metadata:
+      labels:
+        app: phippy-db
+    spec:
+      containers:
+      - name: redis
+        image: ghcr.io/hlesey/redis:latest
+        resources:
+          limits:
+            memory: "100Mi"
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+        ports:
+        - containerPort: 6379
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: phippy-db
+  namespace: phippy
+spec:
+  selector:
+    app: phippy-db
+  ports:
+  - name: redis
+    port: 6379
+    targetPort: 6379

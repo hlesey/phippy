@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.button {
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+</style>
+</head>
+<body>
+
+<h1>{{ message }}</h1>
+<div>
+<img src="{{ picture }}" alt="Smiley face" height="300" width="350">
+</div>
+
+<div>
+<button  class="button" onclick='hitMe()'>Hit Me</button>
+</div>
+
+<script src="http://code.jquery.com/jquery-3.3.1.min.js" ></script>
+
+<script>
+    function hitMe(){
+        $.ajax({
+          type: 'POST',
+          url: "/hits",
+          dataType: "text",
+
+          success: function (data) {
+            location.reload();
+          },
+
+          error: function (data) {
+            alert(data)
+          }
+
+        });
+    }
+</script>
+
+</body>
+</html>

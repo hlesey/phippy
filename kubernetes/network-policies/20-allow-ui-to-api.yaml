@@ -1,0 +1,18 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: 20-allow-ui-to-api
+  namespace: phippy
+spec:
+  podSelector:
+    matchLabels:
+      app: phippy-api
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: phippy-ui
+      ports:
+        - protocol: TCP
+          port: 5000

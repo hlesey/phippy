@@ -1,0 +1,74 @@
+---
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: phippy-api
+  namespace: phippy
+spec:
+  replicas: 2
+#  minReadySeconds: 15
+  selector:
+    matchLabels:
+      app: phippy-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: phippy-api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5000"
+    spec:
+      containers:
+      - name: phippy
+        image: ghcr.io/hlesey/phippy-api:1.0
+        env:
+          - name: FLASK_ENV
+            value: development
+          - name: REDIS_PORT
+            value: "6379"
+          - name: REDIS_HOST
+            value: "phippy-db"
+        resources:
+          limits:
+            memory: "100Mi"
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: phippy-api
+  namespace: phippy
+spec:
+  selector:
+    app: phippy-api
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5000
+    protocol: TCP
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: phippy-api
+  namespace: phippy
+spec:
+  rules:
+  - host: phippy-api.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: phippy-api
+          servicePort: 80
