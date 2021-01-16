@@ -1,7 +1,8 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 import requests
 import json
+from ui.__version__ import __version__
 
 app = Flask(__name__)
 api_url = f"http://{os.environ.get('API_HOST', 'localhost')}:{int(os.environ.get('API_PORT', 5000))}"
@@ -55,3 +56,15 @@ def hits_get():
         picture = "/static/images/level_1000.jpg"
 
     return render_template("index.html", picture=picture, message=message), r.status_code
+
+
+@app.route('/version', methods=['GET'])
+def version():
+    r = requests.get(f'{api_url}/version')
+
+    if r.status_code != 200:
+        message = "Error accessing the API."
+        return render_template("index.html", picture="/static/images/not_ok.png", message=message), r.status_code
+
+    data = json.loads(r.text)
+    return jsonify(api_version=data['version'], ui_version=__version__), 200
