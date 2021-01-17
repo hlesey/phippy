@@ -27,12 +27,12 @@ spec:
       - name: phippy
         image: ghcr.io/hlesey/phippy-api:1.0
         env:
-          - name: FLASK_ENV
-            value: development
-          - name: REDIS_PORT
-            value: "6379"
-          - name: REDIS_HOST
-            value: "phippy-db"
+        - name: FLASK_ENV
+          value: development
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_HOST
+          value: "phippy-db"
         resources:
           limits:
             memory: "100Mi"

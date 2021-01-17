@@ -19,20 +19,17 @@ spec:
     metadata:
       labels:
         app: phippy-ui
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "5000"
     spec:
       containers:
       - name: phippy
         image: ghcr.io/hlesey/phippy-ui:1.0
         env:
-          - name: FLASK_ENV
-            value: development
-          - name: API_PORT
-            value: "80"
-          - name: API_HOST
-            value: "phippy-api"
+        - name: FLASK_ENV
+          value: development
+        - name: API_PORT
+          value: "80"
+        - name: API_HOST
+          value: "phippy-api"
         resources:
           limits:
             memory: "100Mi"

@@ -51,9 +51,9 @@ def hits_get():
     elif hits >= 100 and hits < 500:
         picture = "/static/images/level_100.png"
     elif hits >= 500 and hits < 1000:
-        picture = "/static/images/level_500.jpg"
+        picture = "/static/images/level_500.jpeg"
     elif hits >= 1000:
-        picture = "/static/images/level_1000.jpg"
+        picture = "/static/images/level_1000.png"
 
     return render_template("index.html", picture=picture, message=message), r.status_code
 
