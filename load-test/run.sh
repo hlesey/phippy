@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-API_URL="http://phippy-api.local:30080"
+URL="http://phippy.local:30080"
 
 # Generating POST requests
 echo "Generating POST requests"
@@ -8,8 +8,8 @@ echo "------------------------"
 sleep 1;
 
 for i in {0..500}; do
-    echo "running: curl -s -XPOST $API_URL"
-    curl -s -XPOST $API_URL
+    echo "running: curl -s -XPOST $URL"
+    curl -s -XPOST $URL
 done
 
 # Generating GET requests
@@ -18,8 +18,8 @@ echo "------------------------"
 sleep 1;
 
 for i in {0..1000}; do
-    echo "running: curl -s -XGET $API_URL"
-    curl -s -XGET $API_URL
+    echo "running: curl -s -XGET $URL"
+    curl -s -XGET $URL
 done 
 
 # Artificially generate errors in the app
@@ -28,6 +28,6 @@ echo "------------------------"
 sleep 1;
 
 for i in {0..20}; do
-    echo "running: curl -s -XGET "$API_URL/trigger_error""
-    curl -s -XGET "$API_URL/trigger_error"
+    echo "running: curl -s -XGET "$URL/trigger_error""
+    curl -s -XGET "$URL/trigger_error"
 done

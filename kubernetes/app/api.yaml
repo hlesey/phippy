@@ -58,7 +58,7 @@ spec:
     targetPort: 5000
     protocol: TCP
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: phippy-api
@@ -69,6 +69,9 @@ spec:
     http:
       paths:
       - path: /
+        pathType: "Prefix" 
         backend:
-          serviceName: phippy-api
-          servicePort: 80
+          service:
+            name: phippy-api
+            port:
+              name: http
