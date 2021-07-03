@@ -62,7 +62,7 @@ metadata:
   namespace: phippy
 spec:
   rules:
-  - host: phippy.local
+  - host: phippy.clusterX.qedzone.ro
     http:
       paths:
       - path: /
