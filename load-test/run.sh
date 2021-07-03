@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-URL="http://phippy-api.local:30080"
+URL="http://phippy-api.clusterX.qedzone.ro:30080"
 
 # Generating POST requests
 echo "Generating POST requests"

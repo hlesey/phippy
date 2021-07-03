@@ -30,4 +30,4 @@ kubectl get pods
 kubectl get svc
 ```
 
-Access the [http://phippy.local](http://phippy.local:30080).
+Access the [http://phippy.clusterX.qedzone.ro](http://phippy.clusterX.qedzone.ro:30080).
