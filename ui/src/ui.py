@@ -10,7 +10,7 @@ app = Flask(__name__)
 api_url = f"http://{os.environ.get('API_HOST', 'localhost')}:{int(os.environ.get('API_PORT', 5000))}"
 
 
-@app.route("/hits", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def hits():
     """Read or increase the number of hits"""
 

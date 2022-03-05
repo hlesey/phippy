@@ -4,7 +4,7 @@ TAG = $$(cat src/__version__.py | cut -d '=' -f2 | sed 's/[", ]//g')
 
 # Build
 
-build: lint
+build:
 	docker build -t $(IMG):$(TAG) .
 
 push: 
