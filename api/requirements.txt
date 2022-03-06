@@ -1,5 +1,5 @@
-flask
-redis
-prometheus_client
-jsonify
-requests
+flask==2.0.3
+redis==4.1.4
+prometheus_client==0.13.1
+jsonify==0.5
+requests==2.27.1
