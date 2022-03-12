@@ -62,8 +62,6 @@ kind: Ingress
 metadata:
   name: phippy-ui
   namespace: phippy
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
   - host: phippy.clusterx.qedzone.ro
