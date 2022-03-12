@@ -5,6 +5,5 @@ metadata:
   labels:
     {{- include "common.labels" . | nindent 4 }}
 data:
-    FLASK_ENV: "development"
-    REDIS_PORT: "6379"
-    REDIS_HOST: {{ include "common.name" . }}-db
+    DB_PORT: "6379"
+    DB_HOST: {{ include "common.name" . }}-db

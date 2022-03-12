@@ -2,12 +2,15 @@ import json
 import os
 
 import requests
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, Response, jsonify, render_template, request
+from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 
 from .__version__ import __version__
+from .monitoring import register_metrics
 
 app = Flask(__name__)
 api_url = f"http://{os.environ.get('API_HOST', 'localhost')}:{int(os.environ.get('API_PORT', 5000))}"
+register_metrics(app, app_version=__version__)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -72,3 +75,14 @@ def version():
 
     data = json.loads(r.text)
     return jsonify(api_version=data["version"], ui_version=__version__), 200
+
+
+@app.route("/metrics", methods=["GET"])
+def metrics():
+    """Get metrics"""
+
+    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST), 200
+
+
+if __name__ == "__main__":
+    app.run()
