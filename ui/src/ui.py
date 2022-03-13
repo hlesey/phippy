@@ -25,7 +25,7 @@ def hits():
             return render_template("index.html", picture="/static/images/not_ok.png", message=message), r.status_code
 
         data = json.loads(r.text)
-        return f"{data['hits']}"
+        return f"{data['hits']}", r.status_code
     else:
         r = requests.get(f"{api_url}")
 
