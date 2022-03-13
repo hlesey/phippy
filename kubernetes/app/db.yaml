@@ -8,15 +8,17 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: phippy-db
+      app.kubernetes.io/name: phippy
+      app.kubernetes.io/component: db
   template:
     metadata:
       labels:
-        app: phippy-db
+        app.kubernetes.io/name: phippy
+        app.kubernetes.io/component: db
     spec:
       containers:
       - name: redis
-        image: ghcr.io/hlesey/redis:latest
+        image: ghcr.io/hlesey/redis:6.2.6
         resources:
           limits:
             memory: "100Mi"
@@ -24,8 +26,8 @@ spec:
             cpu: "100m"
             memory: "100Mi"
         ports:
-        - containerPort: 6379
-          protocol: TCP
+        - name: redis
+          containerPort: 6379
 ---
 apiVersion: v1
 kind: Service
@@ -34,7 +36,8 @@ metadata:
   namespace: phippy
 spec:
   selector:
-    app: phippy-db
+    app.kubernetes.io/name: phippy
+    app.kubernetes.io/component: db
   ports:
   - name: redis
     port: 6379

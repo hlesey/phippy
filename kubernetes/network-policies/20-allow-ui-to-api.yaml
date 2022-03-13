@@ -7,12 +7,14 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: phippy-api
+      app.kubernetes.io/name: phippy
+      app.kubernetes.io/component: api
   ingress:
     - from:
         - podSelector:
             matchLabels:
-              app: phippy-ui
+              app.kubernetes.io/name: phippy
+              app.kubernetes.io/component: ui
       ports:
         - protocol: TCP
           port: 5000
