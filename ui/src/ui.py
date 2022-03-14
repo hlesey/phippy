@@ -18,7 +18,13 @@ def hits():
     """Read or increase the number of hits"""
 
     if request.method == "POST":
-        r = requests.post(f"{api_url}")
+        try:
+            r = requests.post(f"{api_url}")
+            r.raise_for_status()
+        except Exception as e:
+            print(f"Error: {e}")
+            message = f"Error accessing the API."
+            return render_template("index.html", picture="/static/images/not_ok.png", message=message), 500
 
         if r.status_code != 201:
             message = "Error accessing the API."
@@ -27,7 +33,13 @@ def hits():
         data = json.loads(r.text)
         return f"{data['hits']}", r.status_code
     else:
-        r = requests.get(f"{api_url}")
+        try:
+            r = requests.get(f"{api_url}")
+            r.raise_for_status()
+        except Exception as e:
+            print(f"Error: {e}")
+            message = f"Error accessing the API."
+            return render_template("index.html", picture="/static/images/not_ok.png", message=message), 500
 
         if r.status_code != 200:
             message = "Error accessing the API."
@@ -67,7 +79,13 @@ def hits():
 def version():
     """Get application running version for both ui and api"""
 
-    r = requests.get(f"{api_url}/version")
+    try:
+        r = requests.get(f"{api_url}/version")
+        r.raise_for_status()
+    except Exception as e:
+        print(f"Error: {e}")
+        message = f"Error accessing the API."
+        return render_template("index.html", picture="/static/images/not_ok.png", message=message), 500
 
     if r.status_code != 200:
         message = "Error accessing the API."
@@ -75,6 +93,32 @@ def version():
 
     data = json.loads(r.text)
     return jsonify(api_version=data["version"], ui_version=__version__), 200
+
+
+@app.route("/readyz", methods=["GET"])
+def readyz():
+    """Check if the web server is healty"""
+
+    is_ready = False
+
+    try:
+        r = requests.get(f"{api_url}/ready")
+        r.raise_for_status()
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify(ready=is_ready), 500
+
+    if r.status_code == 200:
+        is_ready = True
+
+    return jsonify(ready=is_ready), r.status_code
+
+
+@app.route("/livez", methods=["GET"])
+def livez():
+    """Check if the web server is running"""
+
+    return jsonify(alive=True), 200
 
 
 @app.route("/metrics", methods=["GET"])
