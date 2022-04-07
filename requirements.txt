@@ -1,7 +1,0 @@
-# used only for the CI and Development
-black==22.1.0
-isort==5.10.1
-bandit==1.7.2
-pytest==7.0.1
-testcontainers==3.4.2
-flake8==4.0.1

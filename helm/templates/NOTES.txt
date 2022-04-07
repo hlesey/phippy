@@ -1,1 +1,0 @@
-Connect to the application at: http://{{ .Values.ui.ingress.host }}:30080
