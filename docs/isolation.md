@@ -1,4 +1,4 @@
 
 ## Phippy Isolation with Network Policies
 
-![](./static/phippy-api-isolation.png)
+<p><img src="./static/phippy-api-isolation.png" width="80%" /></p>

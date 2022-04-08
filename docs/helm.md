@@ -1,12 +1,24 @@
-Helm install
+# Helm
+
+## Release
 
 ```bash
-helm repo add hlesey https://hlesey.github.io/phippy/helm
+helm package helm/
+helm repo index --url https://hlesey.github.io/phippy/ .
+git checkout gh-pages
+git add *
+git commit -a -m "release new helm version"
+git push origin gh-pages
+```
+
+## Configure helm repo
+
+```bash
+helm repo add hlesey https://hlesey.github.io/phippy
 helm search phippy
 ```
 
-
-## Usage
+## Install chart
 
 [Helm](https://helm.sh) must be installed to use the charts.  Please refer to
 Helm's [documentation](https://helm.sh/docs) to get started.
@@ -28,7 +40,7 @@ helm install phippy hlesey/phippy
 ```
 
 To uninstall the chart:
- 
+
 ```bash
 helm delete phippy
 ```
