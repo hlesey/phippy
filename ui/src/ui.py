@@ -46,30 +46,29 @@ def hits():
             return render_template("index.html", picture="/static/images/not_ok.png", message=message), r.status_code
 
         data = json.loads(r.text)
-        hits = int(data["hits"])
+        total_hits = int(data["hits"])
 
-        if hits % 5 == 0:
+        if total_hits % 5 == 0:
             message = "You can do better!"
             picture = "/static/images/do_it_better.jpeg"
             return render_template("index.html", picture=picture, message=message), r.status_code
 
-        message = "You hit me {0} times.".format(hits)
+        message = "You hit me {0} times.".format(total_hits)
 
-        if hits >= 0 and hits < 10:
-            picture = "/static/images/level_0.jpg"
-        elif hits >= 10 and hits < 20:
+        picture = "/static/images/level_0.jpg"
+        if 10 <= total_hits < 20:
             picture = "/static/images/level_10.jpg"
-        elif hits >= 10 and hits < 20:
+        elif 10 <= total_hits < 20:
             picture = "/static/images/level_10.jpg"
-        elif hits >= 20 and hits < 50:
+        elif 20 <= total_hits < 50:
             picture = "/static/images/level_20.png"
-        elif hits >= 50 and hits < 100:
+        elif 50 <= total_hits < 100:
             picture = "/static/images/level_50.png"
-        elif hits >= 100 and hits < 500:
+        elif 100 <= total_hits < 500:
             picture = "/static/images/level_100.png"
-        elif hits >= 500 and hits < 1000:
+        elif 500 <= total_hits < 1000:
             picture = "/static/images/level_500.jpeg"
-        elif hits >= 1000:
+        elif total_hits >= 1000:
             picture = "/static/images/level_1000.png"
 
         return render_template("index.html", picture=picture, message=message), r.status_code
@@ -97,7 +96,7 @@ def version():
 
 @app.route("/readyz", methods=["GET"])
 def readyz():
-    """Check if the web server is healty"""
+    """Check if the web server is healthy"""
 
     is_ready = False
 

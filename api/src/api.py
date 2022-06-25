@@ -22,15 +22,15 @@ def hits():
 
     if request.method == "POST":
         redis.incr("hits")
-        hits = int(redis.get("hits"))
+        total_hits = int(redis.get("hits"))
 
-        return jsonify(hits=hits), 201
+        return jsonify(hits=total_hits), 201
     else:
         if not redis.exists("hits"):
             redis.set("hits", 0)
-        hits = int(redis.get("hits"))
+        total_hits = int(redis.get("hits"))
 
-        return jsonify(hits=hits), 200
+        return jsonify(hits=total_hits), 200
 
 
 @app.route("/version", methods=["GET"])
@@ -42,7 +42,7 @@ def version():
 
 @app.route("/readyz", methods=["GET"])
 def readyz():
-    """Check if the web server is healty"""
+    """Check if the web server is healthy"""
 
     is_ready = False
 
