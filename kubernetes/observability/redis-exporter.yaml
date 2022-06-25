@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: redis-exporter
-        image: bitnami/redis-exporter:1.36.0
+        image: ghcr.io/hlesey/bitnami-redis-exporter:1.36.0
         resources:
           requests:
             cpu: 100m

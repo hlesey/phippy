@@ -1,15 +1,26 @@
 import json
+import logging
 import os
 
-import requests
 from flask import Flask, Response, jsonify, render_template, request
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
+from py_zipkin.encoding import Encoding
+from py_zipkin.zipkin import zipkin_span
 
 from .__version__ import __version__
+from .external_calls import call_api
 from .monitoring import register_metrics
+from .tracing import default_handler
 
+loggeresp = logging.getLogger(__name__)
 app = Flask(__name__)
-api_url = f"http://{os.environ.get('API_HOST', 'localhost')}:{int(os.environ.get('API_PORT', 5000))}"
+
+
+API_HOST = os.environ.get("API_HOST", "localhost")
+API_PORT = os.environ.get("API_PORT", 5000)
+API_URL = f"http://{API_HOST}:{int(API_PORT)}"
+
+
 register_metrics(app, app_version=__version__)
 
 
@@ -17,41 +28,37 @@ register_metrics(app, app_version=__version__)
 def hits():
     """Read or increase the number of hits"""
 
-    if request.method == "POST":
+    with zipkin_span(
+        service_name="ui",
+        span_name="hits_ui",
+        transport_handler=default_handler,
+        port=5000,
+        sample_rate=100,
+        encoding=Encoding.V2_JSON,
+    ):
+
         try:
-            r = requests.post(f"{api_url}")
-            r.raise_for_status()
+            resp = call_api(request.method, API_URL)
+            resp.raise_for_status()
         except Exception as e:
             print(f"Error: {e}")
             message = f"Error accessing the API."
             return render_template("index.html", picture="/static/images/not_ok.png", message=message), 500
 
-        if r.status_code != 201:
+        if resp.status_code > 400:
             message = "Error accessing the API."
-            return render_template("index.html", picture="/static/images/not_ok.png", message=message), r.status_code
+            return render_template("index.html", picture="/static/images/not_ok.png", message=message), resp.status_code
 
-        data = json.loads(r.text)
-        return f"{data['hits']}", r.status_code
-    else:
-        try:
-            r = requests.get(f"{api_url}")
-            r.raise_for_status()
-        except Exception as e:
-            print(f"Error: {e}")
-            message = f"Error accessing the API."
-            return render_template("index.html", picture="/static/images/not_ok.png", message=message), 500
-
-        if r.status_code != 200:
-            message = "Error accessing the API."
-            return render_template("index.html", picture="/static/images/not_ok.png", message=message), r.status_code
-
-        data = json.loads(r.text)
+        data = json.loads(resp.text)
         hits = int(data["hits"])
+
+        if request.method == "POST":
+            return f"{hits}", resp.status_code
 
         if hits % 5 == 0:
             message = "You can do better!"
-            picture = "/static/images/do_it_better.jpeg"
-            return render_template("index.html", picture=picture, message=message), r.status_code
+            picture = "/static/images/do_it_betteresp.jpeg"
+            return render_template("index.html", picture=picture, message=message), resp.status_code
 
         message = "You hit me {0} times.".format(hits)
 
@@ -72,46 +79,63 @@ def hits():
         elif hits >= 1000:
             picture = "/static/images/level_1000.png"
 
-        return render_template("index.html", picture=picture, message=message), r.status_code
+        return render_template("index.html", picture=picture, message=message), resp.status_code
 
 
 @app.route("/version", methods=["GET"])
 def version():
     """Get application running version for both ui and api"""
+    with zipkin_span(
+        service_name="ui",
+        span_name="version_ui",
+        transport_handler=default_handler,
+        port=5000,
+        sample_rate=100,
+        encoding=Encoding.V2_JSON,
+    ):
 
-    try:
-        r = requests.get(f"{api_url}/version")
-        r.raise_for_status()
-    except Exception as e:
-        print(f"Error: {e}")
-        message = f"Error accessing the API."
-        return render_template("index.html", picture="/static/images/not_ok.png", message=message), 500
+        try:
+            resp = call_api(request.method, f"{API_URL}/version")
+            resp.raise_for_status()
+        except Exception as e:
+            print(f"Error: {e}")
+            message = f"Error accessing the API."
+            return render_template("index.html", picture="/static/images/not_ok.png", message=message), 500
 
-    if r.status_code != 200:
-        message = "Error accessing the API."
-        return render_template("index.html", picture="/static/images/not_ok.png", message=message), r.status_code
+        if resp.status_code != 200:
+            message = "Error accessing the API."
+            return render_template("index.html", picture="/static/images/not_ok.png", message=message), resp.status_code
 
-    data = json.loads(r.text)
-    return jsonify(api_version=data["version"], ui_version=__version__), 200
+        data = json.loads(resp.text)
+        return jsonify(api_version=data["version"], ui_version=__version__), 200
 
 
 @app.route("/readyz", methods=["GET"])
 def readyz():
     """Check if the web server is healty"""
 
-    is_ready = False
+    with zipkin_span(
+        service_name="ui",
+        span_name="readyz_ui",
+        transport_handler=default_handler,
+        port=5000,
+        sample_rate=100,
+        encoding=Encoding.V2_JSON,
+    ):
 
-    try:
-        r = requests.get(f"{api_url}/ready")
-        r.raise_for_status()
-    except Exception as e:
-        print(f"Error: {e}")
-        return jsonify(ready=is_ready), 500
+        is_ready = False
 
-    if r.status_code == 200:
-        is_ready = True
+        try:
+            resp = call_api(request.method, f"{API_URL}/ready")
+            resp.raise_for_status()
+        except Exception as e:
+            print(f"Error: {e}")
+            return jsonify(ready=is_ready), 500
 
-    return jsonify(ready=is_ready), r.status_code
+        if resp.status_code == 200:
+            is_ready = True
+
+        return jsonify(ready=is_ready), resp.status_code
 
 
 @app.route("/livez", methods=["GET"])

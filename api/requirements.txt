@@ -3,3 +3,4 @@ redis==4.1.4
 prometheus_client==0.13.1
 jsonify==0.5
 requests==2.27.1
+py-zipkin==0.20.2

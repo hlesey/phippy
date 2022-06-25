@@ -3,10 +3,13 @@ import os
 
 from flask import Flask, Response, jsonify, request
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
+from py_zipkin.encoding import Encoding
+from py_zipkin.zipkin import zipkin_span
 from redis import Redis
 
 from .__version__ import __version__
 from .monitoring import record_error_metric, register_metrics
+from .tracing import default_handler, get_zipkin_attrs
 
 logger = logging.getLogger(__name__)
 
@@ -20,36 +23,66 @@ register_metrics(app, app_version=__version__)
 def hits():
     """Read or increase the number of hits"""
 
-    if request.method == "POST":
-        redis.incr("hits")
-        hits = int(redis.get("hits"))
+    with zipkin_span(
+        service_name="api",
+        zipkin_attrs=get_zipkin_attrs(),
+        span_name="hits_api",
+        transport_handler=default_handler,
+        port=5000,
+        sample_rate=100,
+        encoding=Encoding.V2_JSON,
+    ):
 
-        return jsonify(hits=hits), 201
-    else:
-        if not redis.exists("hits"):
-            redis.set("hits", 0)
-        hits = int(redis.get("hits"))
+        if request.method == "POST":
+            redis.incr("hits")
+            hits = int(redis.get("hits"))
 
-        return jsonify(hits=hits), 200
+            return jsonify(hits=hits), 201
+        else:
+            if not redis.exists("hits"):
+                redis.set("hits", 0)
+            hits = int(redis.get("hits"))
+
+            return jsonify(hits=hits), 200
 
 
 @app.route("/version", methods=["GET"])
 def version():
     """Get application running version"""
 
-    return jsonify(version=__version__), 200
+    with zipkin_span(
+        service_name="api",
+        zipkin_attrs=get_zipkin_attrs(),
+        span_name="version_api",
+        transport_handler=default_handler,
+        port=5000,
+        sample_rate=100,
+        encoding=Encoding.V2_JSON,
+    ):
+
+        return jsonify(version=__version__), 200
 
 
 @app.route("/readyz", methods=["GET"])
 def readyz():
     """Check if the web server is healty"""
 
-    is_ready = False
+    with zipkin_span(
+        service_name="api",
+        zipkin_attrs=get_zipkin_attrs(),
+        span_name="readyz_api",
+        transport_handler=default_handler,
+        port=5000,
+        sample_rate=100,
+        encoding=Encoding.V2_JSON,
+    ):
 
-    if redis.ping():
-        is_ready = True
+        is_ready = False
 
-    return jsonify(ready=is_ready), 200
+        if redis.ping():
+            is_ready = True
+
+        return jsonify(ready=is_ready), 200
 
 
 @app.route("/livez", methods=["GET"])
