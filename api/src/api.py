@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 app = Flask(__name__)
-redis = Redis(host=os.environ.get("DB_HOST", "localhost"), port=int(os.environ.get("DB_PORT", 6379)))
+redis = Redis(host=os.environ.get("DB_HOST", "localhost"), port=int(os.environ.get("DB_PORT", 6379)), decode_responses=True)
 register_metrics(app, app_version=__version__)
 
 

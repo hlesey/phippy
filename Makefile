@@ -8,7 +8,7 @@ test:
 lint: ## Lint python code
 	@echo "Linting python code..."
 	flake8 --ignore=E501,W503,F541,E203 api/src/ ui/src/
-	black --line-length 120 --check api/src/ ui/src/
+	black --line-length 132 --check api/src/ ui/src/
 	isort -c api/src/ ui/src/
 
 format: ## Format python code
