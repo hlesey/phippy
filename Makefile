@@ -2,14 +2,23 @@
 # CI
 
 test:
+	@echo "Running phippy tests..."
 	pytest --maxfail=1 -vv api/tests
 
-lint:
+lint: ## Lint python code
+	@echo "Linting python code..."
 	flake8 --ignore=E501,W503,F541,E203 api/src/ ui/src/
 	black --line-length 120 --check api/src/ ui/src/
 	isort -c api/src/ ui/src/
 
-security:
+format: ## Format python code
+	@echo "Fixing imports..."
+	@isort --line-length 132 --profile "black" .
+	@echo "Fixing format..."
+	@black --line-length 132 .
+
+security: ## Check python code for security issues
+	@echo "Check python code for security issues..."
 	bandit -ll -r api/src/ ui/src/
 
 # Development

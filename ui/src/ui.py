@@ -19,7 +19,7 @@ def hits():
 
     if request.method == "POST":
         try:
-            r = requests.post(f"{api_url}")
+            r = requests.post(f"{api_url}", timeout=5)
             r.raise_for_status()
         except Exception as e:
             print(f"Error: {e}")
@@ -34,7 +34,7 @@ def hits():
         return f"{data['hits']}", r.status_code
     else:
         try:
-            r = requests.get(f"{api_url}")
+            r = requests.get(f"{api_url}", timeout=5)
             r.raise_for_status()
         except Exception as e:
             print(f"Error: {e}")
@@ -79,7 +79,7 @@ def version():
     """Get application running version for both ui and api"""
 
     try:
-        r = requests.get(f"{api_url}/version")
+        r = requests.get(f"{api_url}/version", timeout=5)
         r.raise_for_status()
     except Exception as e:
         print(f"Error: {e}")
@@ -101,7 +101,7 @@ def readyz():
     is_ready = False
 
     try:
-        r = requests.get(f"{api_url}/ready")
+        r = requests.get(f"{api_url}/ready", timeout=5)
         r.raise_for_status()
     except Exception as e:
         print(f"Error: {e}")
