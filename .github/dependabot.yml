@@ -1,0 +1,32 @@
+# Please see the documentation for all configuration options: https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+# github-actions
+- directory: "/"
+  package-ecosystem: "github-actions"
+  schedule:
+    interval: "weekly"
+    time: "09:00"
+    # Use Europe/Bucharest Standard Time (UTC +02:00)
+    timezone: "Europe/Bucharest"
+  commit-message:
+    prefix: "dependabot"
+    include: scope
+  labels:
+  - "kind/cleanup"
+  - "dependabot"
+# Python
+- directory: "/"
+  package-ecosystem: "pip"
+  schedule:
+    interval: "weekly"
+    time: "09:00"
+    # Use Europe/Bucharest Standard Time (UTC +02:00)
+    timezone: "Europe/Bucharest"
+  commit-message:
+    prefix: "dependabot"
+    include: scope
+  labels:
+  - "kind/cleanup"
+  - "dependabot"

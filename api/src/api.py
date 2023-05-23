@@ -74,7 +74,6 @@ def trigger_error():
 
 @app.errorhandler(500)
 def handle_500(error):
-
     record_error_metric(status=500)
     return jsonify(error=str(error)), 500
 

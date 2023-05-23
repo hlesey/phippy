@@ -1,5 +1,8 @@
+# IDE related files
 .idea
 .vscode
 
+# Python related files
 __pycache__
 venv
+.hypothesis
