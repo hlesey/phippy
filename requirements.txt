@@ -3,6 +3,6 @@ black==24.2.0
 click==8.1.7
 isort==5.13.2
 bandit==1.7.7
-pytest==8.0.0
+pytest==8.0.1
 testcontainers==3.7.1
 flake8==7.0.0
