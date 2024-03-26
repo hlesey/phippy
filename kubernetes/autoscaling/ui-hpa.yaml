@@ -1,5 +1,5 @@
 ---
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: phippy-ui-hpa
@@ -11,4 +11,13 @@ spec:
     name: phippy-ui
   minReplicas: 2
   maxReplicas: 5
-  targetCPUUtilizationPercentage: 25
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 25
+        type: Utilization
+    type: Resource
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
