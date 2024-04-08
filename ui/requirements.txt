@@ -1,4 +1,4 @@
-flask==3.0.2
+flask==3.0.3
 prometheus_client==0.20.0
 jsonify==0.5
 requests==2.31.0
