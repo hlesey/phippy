@@ -1,4 +1,4 @@
 flask==3.0.3
-redis==5.0.4
+redis==5.0.5
 prometheus_client==0.20.0
-requests==2.32.2
+requests==2.32.3
