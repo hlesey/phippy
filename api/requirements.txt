@@ -2,4 +2,4 @@ flask==3.0.3
 redis==5.0.5
 prometheus_client==0.20.0
 jsonify==0.5
-requests==2.31.0
+requests==2.32.2
