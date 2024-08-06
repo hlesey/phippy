@@ -2,10 +2,12 @@ version: "3.7"
 
 services: 
   ui:
-    image: ghcr.io/hlesey/phippy-ui:1.0
+    image: phippy-ui:v1.0
     environment:
-      API_HOST: api
-      API_PORT: 5000
+      # API_HOST: api
+      # API_PORT: 5000
+      API_HOST: host.docker.internal
+      API_PORT: 8000
     ports:
       - "8080:5000"
     networks:
@@ -13,22 +15,25 @@ services:
     depends_on:
       - api
   api:
-    image: ghcr.io/hlesey/phippy-api:1.0
+    image: phippy-api:v1.0
     environment:
-      DB_HOST: redis
+      # DB_HOST: redis
+      DB_HOST: host.docker.internal
       DB_PORT: 6379
     ports:
-      - "5000:5000"
+      - "8081:5000"
     networks:
       - phippy-net
     depends_on:
       - redis
   redis:
-    image: ghcr.io/hlesey/redis:6.2.6
+    image: ghcr.io/hlesey/redis:7.4
     networks:
       - phippy-net
+    ports:
+      - "6379:6379"
   redis-exporter:
-    image: bitnami/redis-exporter:1.36.0
+    image: ghcr.io/hlesey/bitnami/redis-exporter:1.62.0
     environment:
       REDIS_ADDR: redis:6379
     ports:
