@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: ghcr.io/hlesey/redis:7.2.3
+        image: ghcr.io/hlesey/redis:7.4
         resources:
           limits:
             memory: "100Mi"
