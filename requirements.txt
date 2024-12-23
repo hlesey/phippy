@@ -1,6 +1,6 @@
 # used only for the CI and Development
 black==24.10.0
-click==8.1.7
+click==8.1.8
 isort==5.13.2
 bandit==1.8.0
 pytest==8.3.4
