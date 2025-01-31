@@ -101,7 +101,7 @@ def readyz():
     is_ready = False
 
     try:
-        r = requests.get(f"{api_url}/ready", timeout=5)
+        r = requests.get(f"{api_url}/readyz", timeout=5)
         r.raise_for_status()
     except Exception as e:
         print(f"Error: {e}")
