@@ -1,5 +1,5 @@
 # used only for the CI and Development
-black==24.10.0
+black==25.1.0
 click==8.1.8
 isort==5.13.2
 bandit==1.8.2
