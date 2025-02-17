@@ -5,4 +5,4 @@ isort==6.0.0
 bandit==1.8.2
 pytest==8.3.4
 testcontainers==4.9.1
-flake8==7.1.1
+flake8==7.1.2
