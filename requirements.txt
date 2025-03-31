@@ -1,7 +1,7 @@
 # used only for the CI and Development
 black==25.1.0
 click==8.1.8
-isort==6.0.0
+isort==6.0.1
 bandit==1.8.3
 pytest==8.3.4
 testcontainers==4.9.2
