@@ -72,15 +72,15 @@ metadata:
   namespace: phippy
 spec:
   parentRefs:
-  - name: eg
+  - name: envoy-gateway
     namespace: envoy-gateway
   hostnames:
   - phippy-api.clusterx.qedzone.ro
   rules:
-  - backendRefs:
-    - name: phippy-api
-      port: 80
-    matches:
+  - matches:
     - path:
         type: PathPrefix
         value: /
+    backendRefs:
+    - name: phippy-api
+      port: 80
