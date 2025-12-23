@@ -7,8 +7,8 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-        app.kubernetes.io/name: phippy
-        app.kubernetes.io/component: db
+      app.kubernetes.io/name: phippy
+      app.kubernetes.io/component: db
   ingress:
     - from:
         - podSelector:
