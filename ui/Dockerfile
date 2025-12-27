@@ -1,4 +1,4 @@
-FROM python:buster
+FROM python:slim-trixie
 
 WORKDIR /ui
 COPY src/ .
