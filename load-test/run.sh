@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-UI_URL="http://phippy.clusterx.qedzone.ro:30080"
-API_URL="http://phippy-api.clusterx.qedzone.ro:30080"
+UI_URL="http://phippy.clusterx.qedzone.ro"
+API_URL="http://phippy-api.clusterx.qedzone.ro"
 
 ITERATIONS=10000
 
