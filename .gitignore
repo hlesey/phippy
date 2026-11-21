@@ -6,3 +6,6 @@
 __pycache__
 venv
 .hypothesis
+
+# MacOS related files
+.DS_Store
